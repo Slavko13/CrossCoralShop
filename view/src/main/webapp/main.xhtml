@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+
+<body>
+
+
+
+    <h2>Результат выполнения лабы вы увидите, если нажмете узнать больше для товара который вам нужно узнать </h2>Результат
+    <i>Это будет выведено ввиде первый популярный товар + второй популярный товар</i>
+    <b>${requestScope.firstPopular} + ${requestScope.secondPopular} </b>
+
+
+
+
+    <h4> Создать заказ</h4>
+    <h:form>
+    <p:commandButton action="#{orderBean.createOrder()}" value="Создать"/>
+    </h:form>
+
+
+    <p:panel>
+        <p:dataTable value="#{goodsBean.goods}" var="good" >
+            <p:column headerText="Name">
+                <h:outputText value="#{good.name}"  />
+            </p:column>
+            <p:column headerText="Кнопка">
+                <form action="good" method="GET" >
+                    <input type="hidden" name="id" value="#{good.id}"/>
+                    <p:commandButton value="Узнать больше"/>
+                </form>
+            </p:column>
+
+            <p:column headerText="Кнопка">
+                <h:form>
+                <p:commandButton value="Добавить" action="#{goodsBean.addToOrder(orderBean.id, good.id)}" update="addedThings" />
+                </h:form>
+            </p:column>
+
+        </p:dataTable>
+
+    </p:panel>
+
+
+        <h2>Ваш заказ #{orderBean.id}</h2>
+        <p:panel>
+            <p:dataTable value="#{goodsBean.getGoodsInOrder(orderBean.id)}" var="goodInOrder" id="addedThings">
+                <p:column headerText="Ваши товары">
+                    <h:outputText value="#{goodInOrder.name}"  />
+                </p:column>
+            </p:dataTable>
+        </p:panel>
+
+
+
+</body>
+</html>
